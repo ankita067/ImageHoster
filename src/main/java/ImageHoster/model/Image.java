@@ -139,6 +139,6 @@ public class Image {
     }
 
     public void setComments(List<Comment> comments) {
-        Comments = comments;
+        this.Comments = comments;
     }
 }
