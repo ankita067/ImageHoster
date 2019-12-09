@@ -51,6 +51,13 @@ public class Image {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
 
+    //The attribute contains a list of all the comments of an image
+    //Note that no column will be generated for this attribute in the database instead a new table will be created
+    //Since the mapping is Many to Many, a new table will be generated containing the two columns both referencing to the primary key of both the tables ('images', 'tags')
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Comment> Comments = new ArrayList<>();
+
+
     public Image() {
     }
 
@@ -125,5 +132,13 @@ public class Image {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public List<Comment> getComments() {
+        return Comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        Comments = comments;
     }
 }
