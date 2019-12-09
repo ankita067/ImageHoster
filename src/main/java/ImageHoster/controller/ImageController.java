@@ -140,7 +140,7 @@ public class ImageController {
         updatedImage.setDate(new Date());
 
         imageService.updateImage(updatedImage);
-        return "redirect:/images/" + updatedImage.getTitle();
+        return "redirect:/images/"+updatedImage.getId()+"/" + updatedImage.getTitle();
     }
 
 
@@ -157,7 +157,7 @@ public class ImageController {
             String error = "Only the owner of the image can delete the image";
             redirectAttributes.addFlashAttribute("deleteError", error);
             redirectAttributes.addAttribute("deleteError", error);
-            return "redirect:/images/" +imageId;
+            return "redirect:/images/" +imageId+"/"+imageService.getImage(imageId).getTitle();
 
         }
     }
