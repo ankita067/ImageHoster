@@ -1,8 +1,11 @@
 package ImageHoster.controller;
 
+import ImageHoster.model.Comment;
 import ImageHoster.model.Image;
 import ImageHoster.model.Tag;
 import ImageHoster.model.User;
+import ImageHoster.repository.CommentRepository;
+import ImageHoster.service.CommentService;
 import ImageHoster.service.ImageService;
 import ImageHoster.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,8 @@ public class ImageController {
 
     @Autowired
     private TagService tagService;
+    @Autowired
+    private CommentService commentService;
 
     //This method displays all the images in the user home page after successful login
     @RequestMapping("images")
@@ -162,7 +167,19 @@ public class ImageController {
         }
     }
 
-
+    //This controller method is called when the request pattern is of type 'image/' and also the incoming request is of POST type
+    //The method calls the setComments() method in the business logic passing the id and title of the image , in which comment is added
+    @RequestMapping(value="/image/{id}/{title}/comments",method = RequestMethod.POST)
+    public String setComments(@PathVariable("id")  int imageId, @PathVariable("title") String title,@RequestParam("comment") String comment,  Model model,HttpSession session) {
+        Image image = imageService.getImage(imageId);
+        Comment newComment= new Comment(comment, new Date(),(User)session.getAttribute("loggeduser"),image);
+        List<Comment> lstComments= image.getComments();
+        lstComments.add(newComment);
+        image.setComments(lstComments);
+        commentService.addComment(newComment);
+        imageService.updateImage(image);
+        return "redirect:/images/" +imageId+"/"+image.getTitle();
+    }
     //This method converts the image to Base64 format
     private String convertUploadedFileToBase64(MultipartFile file) throws IOException {
         return Base64.getEncoder().encodeToString(file.getBytes());
