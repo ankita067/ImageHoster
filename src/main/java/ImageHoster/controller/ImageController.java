@@ -103,6 +103,7 @@ public class ImageController {
             return "images/edit";
         } else {
             String error = "Only the owner of the image can edit the image";
+            redirectAttributes.addFlashAttribute("editError", error);
             redirectAttributes.addAttribute("editError", error);
             return "redirect:/images/" +imageId+"/"+image.getTitle();
         }
@@ -154,6 +155,7 @@ public class ImageController {
             return "redirect:/images";
         } else {
             String error = "Only the owner of the image can delete the image";
+            redirectAttributes.addFlashAttribute("deleteError", error);
             redirectAttributes.addAttribute("deleteError", error);
             return "redirect:/images/" +imageId;
 
